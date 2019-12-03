@@ -1,36 +1,104 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'
-import Page from './pages/Page'
-import Page2 from './pages/Page2'
-import HomePage from './pages/HomePage'
-import NotFound from './pages/NotFound'
+import { tsConstructorType } from '@babel/types'
 
 const App = () => {
+  const [data, setData] = useState('')
+
+  const userInput = input => {
+    setData(previous => {
+      return previous + input
+    })
+  }
+
+  const reset = () => {
+    setData([])
+  }
+
+  const math = () => {
+    if (data[1] === '/') {
+      setData(parseInt(data[0]) / parseInt(data[2]))
+    } else if (data[1] === '-') {
+      setData(parseInt(data[0]) - parseInt(data[2]))
+    } else if (data[1] === '+') {
+      setData(parseInt(data[0]) + parseInt(data[2]))
+    } else if (data[1] === '*') {
+      setData(parseInt(data[0]) * parseInt(data[2]))
+    }
+  }
+
   return (
-    <Router>
-      <header>
-        <h1>Welcome to my SPA</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Go Home</Link>
-            </li>
-            <li>
-              <Link to="/1">Page 1</Link>
-            </li>
-            <li>
-              <Link to="/2">Page 2</Link>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <Switch>
-        <Route exact path="/" component={HomePage}></Route>
-        <Route exact path="/1" component={Page}></Route>
-        <Route exact path="/2" component={Page2}></Route>
-        <Route path="*" component={NotFound}></Route>
-      </Switch>
-    </Router>
+    <>
+      <div className="app">
+        <div className="calc-wrapper">
+          <div className="input">{data}</div>
+          <section className="resetRow">
+            <button className="resetButton" onClick={() => reset()}>
+              AC
+            </button>
+          </section>
+          <section className="row">
+            <button className="numberButton" onClick={() => userInput('7')}>
+              7
+            </button>
+            <button className="numberButton" onClick={() => userInput('8')}>
+              8
+            </button>
+            <button className="numberButton" onClick={() => userInput('9')}>
+              9
+            </button>
+            <button
+              className="addDivideEquateButtons"
+              onClick={() => userInput('/')}
+            >
+              ÷
+            </button>
+          </section>
+          <section className="row">
+            <button className="numberButton" onClick={() => userInput('4')}>
+              4
+            </button>
+            <button className="numberButton" onClick={() => userInput('5')}>
+              5
+            </button>
+            <button className="numberButton" onClick={() => userInput('6')}>
+              6
+            </button>
+            <button className="mathButton" onClick={() => userInput('*')}>
+              X
+            </button>
+          </section>
+          <section className="row">
+            <button className="numberButton" onClick={() => userInput('1')}>
+              1
+            </button>
+            <button className="numberButton" onClick={() => userInput('2')}>
+              2
+            </button>
+            <button className="numberButton" onClick={() => userInput('3')}>
+              3
+            </button>
+            <button className="subButton" onClick={() => userInput('-')}>
+              -
+            </button>
+          </section>
+          <section className="row">
+            <button className="numberButton" onClick={() => userInput('0')}>
+              0
+            </button>
+            <button className="addDivideEquateButtons" onClick={() => math()}>
+              =
+            </button>
+            <button
+              className="addDivideEquateButtons"
+              onClick={() => userInput('+')}
+            >
+              +
+            </button>
+          </section>
+        </div>
+      </div>
+    </>
   )
 }
 
